@@ -1,0 +1,86 @@
+{% extends "base.html"%}
+
+{% load mathfilters %}
+{% block content %}
+
+<div class="container mt-3">
+    <div class="row" style="margin-top: 75px;">
+
+        <div class="col-md-7">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if cartItems %}
+                        {% for cartItem in cartItems %}
+                        <tr>
+                            <td><img src="{{ cartItem.product.image.url }}" alt="" style="height: 120px;"></td>
+                            <td>{{ cartItem.product.name|title }}</td>
+                            <td>{{ cartItem.quantity }}
+                                <a class="btn btn-danger" href="{% url 'add_to_cart' cartItem.product.id %}"
+                                    role="button">+</a>
+                                <a class="btn btn-danger" href="{% url 'decrease_quantity_product' cartItem.product.id %}"
+                                    role="button">-</a>
+                            </td>
+                            <td>{{ cartItem.product.price|mul:cartItem.quantity }}</td>
+                            <td><a class="btn btn-danger" href="{% url 'remove_from_cart' cartItem.product.id %}"
+                                    role="button">X</a></td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info uppercase">
+                            There are no items in your cart !!
+                        </div>
+                    {% endif %}
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-1"></div>
+
+        {% if cartItems %}
+            <div class="col-md-3 mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title h4">Cart Summary</div>
+                        <div class="card-text">
+                            <table class="table table-borderless mt-3">
+
+                                <tbody>
+                                    <tr>
+                                        <td>Product Total</td>
+                                        <td>{{ total_price }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cargo Total</td>
+                                        <td>10</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Discount</td>
+                                        <td>20</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <p class="text-end h5">{{ total_price|add:10|sub:20 }}</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center">
+                    <button type="button" class="btn btn-danger btn-block mt-2">Confirm Cart</button>
+                </p>
+            </div>
+        {% endif %}
+    </div>
+
+
+
+</div>
+{% endblock %}

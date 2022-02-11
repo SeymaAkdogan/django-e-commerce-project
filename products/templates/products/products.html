@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  .card-link {
+    color: black;
+  }
+
+  .card-link:hover {
+    color: red;
+  }
+</style>
+
+
+<div class="container" style='margin-top:75px;'>
+
+    <form action="{% url 'products' %}">
+    <div class='row'>
+      <div class='col-5'>
+        <label for="category">Category</label>
+        <select id="category" class="form-control mt-1" name="category">
+          <option>Choose</option>
+          {% for category in categories %}
+            {% if selected_category == category.name %}
+              <option value="{{category.name}}" selected>{{ category.name|title }}</option>
+            {% else %}
+              <option value="{{category.name}}" class="">{{ category.name|title }}</option>
+            {%endif%}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-1 mt-4">
+        {% if min_price %}
+          <input type="text" value="{{min_price}}" size="3" id="min_price" name="min_price" />
+        {% else %}
+          <input type="text" value="0" size="3" id="min_price" name="min_price" />
+        {% endif %}
+      </div>
+      <div class="col-1 mt-4">
+        {% if max_price %}
+          <input type="text" value="{{max_price}}" size="3" id="max_price" name='max_price'/>
+        {% else %}
+          <input type="text" value="10000" size="3" id="max_price" name='max_price'/>
+        {% endif %}
+        
+      </div>
+      <div class='col mt-4'>
+        <button class="btn btn-primary">Select</button>
+      </div>
+    </div>
+  </form>
+
+
+  <div class="row mb-3">
+      {% if error %}
+        <div class="alert alert-danger uppercase mt-3">
+          {{error}}
+      </div>
+      {% endif %}
+      {% for product in products %}
+
+      <div class="col-md-3">
+
+        <div class="card mt-3">
+          <a href="{% url 'product_details' product.slug %}">
+            <img src="{{ product.image.url}}" class="card-img-top" style='height:350px;'>
+          </a>
+          <div class="card-body">
+            <p class="card-title">{{ product.name|title }}</p>
+            <p class="card-text">{{ product.price }} </p>
+            
+            <a href="{% url 'add_to_cart' product.id %}" class="card-link">
+              <p class="text-end mb-0 pb-0"><i class="fas fa-shopping-cart 2x"></i></p>
+            </a>
+            
+            
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+
+  </div>
+
+  {% endblock content %}

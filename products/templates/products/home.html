@@ -1,0 +1,24 @@
+{% extends 'base.html' %} 
+{% block content %} 
+
+
+<div>
+    <div class="container">
+        <div class="row" style="margin-top: 55px;">
+            {% for category in categories %}
+                <div class="col-md-4">
+                    <a href="{% url 'products_by_categories' category.category_slug %}">
+                    <div class="card text-white my-3" style="border: none">
+                        <img src="{{ category.image.url }}" class="card-img" />
+                        <div class="card-img-overlay" style="margin-top: 25px">
+                        <h5 class="card-title">{{ category.name|upper}}</h5>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+  {% endblock content %}
+
